@@ -6,7 +6,7 @@ import std.traits;
 import core.time;
 
 auto run(D)(D day)
-if (hasMember!(D, "run") && isFunction!(D.run))
+if (hasMember!(D, "run") && isFunction!(D.run) && !Parameters!(D.run).length)
 {
     return &day.run;
 }

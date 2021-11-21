@@ -3,7 +3,7 @@ module days.day;
 import std.stdio;
 import std.file;
 import std.traits;
-import core.time;
+import timer;
 
 auto run(D)(D day)
 if (hasMember!(D, "run") && isFunction!(D.run) && !Parameters!(D.run).length)
@@ -15,15 +15,19 @@ interface Day(TInput, TResult, string path)
 {
     final void run()
     {
-        auto data = parseData(readFile);
-        auto ta1 = MonoTime.currTime;
-        auto answerA = problemA(data);
-        auto ta2 = MonoTime.currTime;
-        writefln("A: %s (%s ns)", answerA, (ta2 - ta1).total!"nsecs");
-        auto tb1 = MonoTime.currTime;
-        auto answerB = problemB(data);
-        auto tb2 = MonoTime.currTime;
-        writefln("B: %s (%s ns)", answerB, (tb2 - tb1).total!"nsecs");
+        auto t = Timer();
+        t.start;
+        auto data = parseData(readFile, &t);
+        t.lap("Parsing data");
+        auto answerA = problemA(data, &t);
+        t.lap("Answer A total");        
+        auto answerB = problemB(data, &t);
+        t.stop;
+        t.lap("Answer B total");
+        writefln("Answer A: %s", answerA);
+        writefln("Answer B: %s", answerB);
+        t.tabulate.writeln;
+        t.reset;
     }
 
     final string readFile()
@@ -40,7 +44,7 @@ interface Day(TInput, TResult, string path)
         return path.readText;
     }
 
-    TInput parseData(string data);
-    TResult problemA(TInput data);
-    TResult problemB(TInput data);
+    TInput parseData(string data, Timer* timer);
+    TResult problemA(TInput data, Timer* timer);
+    TResult problemB(TInput data, Timer* timer);
 }

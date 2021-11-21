@@ -6,7 +6,7 @@ import std.traits;
 import timer;
 
 auto run(D)(D day)
-if (hasMember!(D, "run") && isFunction!(D.run) && !Parameters!(D.run).length)
+        if (hasMember!(D, "run") && isFunction!(D.run) && !Parameters!(D.run).length)
 {
     return &day.run;
 }
@@ -20,7 +20,7 @@ interface Day(TInput, TResult, string path)
         auto data = parseData(readFile, &t);
         t.lap("Parsing data");
         auto answerA = problemA(data, &t);
-        t.lap("Answer A total");        
+        t.lap("Answer A total");
         auto answerB = problemB(data, &t);
         t.stop;
         t.lap("Answer B total");
@@ -35,7 +35,7 @@ interface Day(TInput, TResult, string path)
     {
         assert(path.exists && path.isFile);
     }
-    out(r)
+    out (r)
     {
         assert(r.length > 0);
     }

@@ -12,11 +12,12 @@ void main()
     //void delegate()[] days = [run!Day01(new Day01), run!Day02(new Day02), ...];
     void delegate()[] days = [];
     auto length = days.length;
-    if (length == 0) {
+    if (length == 0)
+    {
         writeln("No days present!");
         return;
     }
-    for (;;)
+    while (true)
     {
         writef("Enter a day to run (1 - %s) or 'q' to quit: ", length);
         stdout.flush;

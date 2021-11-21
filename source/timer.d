@@ -65,7 +65,8 @@ struct Timer
     public wstring tabulate()
     {
         auto ts = [startTime] ~ times[];
-        wstring[] stringTimes = ts[0..$-1].zip(ts[1..$]).map!(tup => (tup[1] - tup[0]).formatDur.to!wstring).array;
+        wstring[] stringTimes = ts[0 .. $ - 1].zip(ts[1 .. $])
+            .map!(tup => (tup[1] - tup[0]).formatDur.to!wstring).array;
         wstring[] summary = [
             "Total", (stopTime - startTime).formatDur.to!wstring
         ];

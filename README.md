@@ -2,6 +2,10 @@
 
 A template for Advent of Code solutions written in D.
 
+## Notes
+
+Unicode output is janky on Windows; enable Unicode UTF-8 support in `intl.cpl`'s  Administrative | Change system locale...
+
 ## Dependencies
 
 - A D compiler.

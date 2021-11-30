@@ -1,25 +1,25 @@
-import std.array;
-import std.conv;
-import std.stdio;
-import std.functional;
-import std.string;
-import days.day;
+import std.conv : to;
+import std.regex: ctRegex, matchFirst;
+import std.stdio : readln, stdout, writef, writeln;
+import std.string : icmp, strip;
+import days.day : Runner;
 import days.days;
 
 void main()
 {
     // Add a reference to each day here
-    //void delegate()[] days = [run!Day01(new Day01), run!Day02(new Day02), ...];
-    void delegate()[] days = [];
+    // scope Runner[] days = [Runner(new Day01)], Runner(new Day02), ...];
+    scope Runner[] days = [];
     auto length = days.length;
     if (length == 0)
     {
         writeln("No days present!");
         return;
     }
+    auto r = ctRegex!(r"^(\d+)([ab])$", "s");
     while (true)
     {
-        writef("Enter a day to run (1 - %s) or 'q' to quit: ", length);
+        writef("Enter a day to run (1 - %s) followed by 'a' or 'b', or 'q' to quit: ", length);
         stdout.flush;
         auto input = readln.strip;
         if (input == "q")
@@ -28,8 +28,18 @@ void main()
         }
         else
         {
-            auto index = input.to!ulong - 1;
-            days[index]();
+            auto m = input.matchFirst(r);
+            if (m.empty) { continue; }
+            auto index = m[1].to!ulong - 1;
+            auto runner = days[index];
+            if (m[2].icmp("a") == 0)
+            {
+                runner.runA();
+            }
+            else
+            {
+                runner.runB();
+            }
         }
     }
 }
